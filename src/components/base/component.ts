@@ -1,26 +1,24 @@
 export abstract class Component<T> {
     protected constructor(protected readonly container: HTMLElement) {}
 
-    //Установить текстовое содержимое
-    protected setText(element: HTMLElement, value: string) {
-        if (element) {
-            element.textContent = value;
-        }
-    }
+    //переключить класс
+    toggleClass(element: HTMLElement, className: string, force?: boolean)
 
-    //Установить изображение с альтернативным текстом
-    protected setImage(element: HTMLImageElement, src: string, alt?: string) {
-        if (element) {
-            element.src = src;
-            if (alt) {
-                element.alt = alt;
-            }
-        }
-    }
+    //установить текстовое содержимое
+    protected setText(element: HTMLElement, value: string)
 
-    //Вернуть корневой DOM-элемент
-    render(data?: Partial<T>): HTMLElement {
-        Object.assign(this as object, data ?? {});
-        return this.container;
-    }
+    //сменить статус блокировки
+    setDisabled(element: HTMLElement, state: boolean)
+
+    //скрыть компонент
+    protected setHidden(element: HTMLElement)
+
+    //показать компонент
+    protected setVisible(element: HTMLElement)
+
+    //установить изображение с альтернативным текстом
+    protected setImage(element: HTMLImageElement, src: string, alt?: string)
+
+    //вернуть корневой DOM-элемент
+    render(data?: Partial<T>): HTMLElement
 }

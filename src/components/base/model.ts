@@ -1,11 +1,8 @@
 import { IEvents } from './events';
 
 export abstract class Model<T> {
-    protected constructor(data: Partial<T>, protected events: IEvents) {
-        Object.assign(this, data);
-    }
+    protected constructor(data: Partial<T>, protected events: IEvents)
 
-    emitChanges(event: string, payload?: object) {
-        this.events.emit(event, payload ?? {});
-    }
+    //сообщить всем что модель поменялась
+    emitChanges(event: string, payload?: object)
 }
