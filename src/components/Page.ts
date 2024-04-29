@@ -2,6 +2,7 @@ import {Component} from './base/Component';
 import {IPage} from '../types';
 import {IEvents} from './base/events';
 
+//Класс для управления элементами главной страницы
 export class Page extends Component<IPage> {
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);

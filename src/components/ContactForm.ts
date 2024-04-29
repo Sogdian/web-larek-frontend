@@ -2,6 +2,7 @@ import {IContactForm } from '../types';
 import {IEvents} from './base/events';
 import {Form} from "./common/Form";
 
+//Класс для управления отображением формы Контакты
 export class ContactForm extends Form<IContactForm> {
     constructor(container: HTMLFormElement, events: IEvents) {
         super(container, events);

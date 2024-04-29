@@ -55,11 +55,7 @@
 
 ### API
 ```TypeScript
-export interface ILarekAPI {
-    getProduct: (id: string) => Promise<ICard>;
-    getProductList: () => Promise<ICard[]>;
-}
-
+//Класс для взаимодействия с сервером
 export class LarekAPI extends Api implements ILarekAPI {
     //API_ORIGIN
     readonly cdn: string;
@@ -136,12 +132,8 @@ export interface IOrderSuccess {
 ```
 ### Слой данных
 ```TypeScript
-//Класс для хранение данных
+//Класс для управления состоянием приложения
 export class AppData extends Model<IAppData> {
-    catalog: IProduct[];
-    basket: IProduct[] = [];
-    order: IOrder;
-
     //получение списка товаров
     setCatalog(items: IProduct[]): void
 
@@ -170,6 +162,7 @@ export class AppData extends Model<IAppData> {
 
 ### Общие компоненты
 ```TypeScript
+//Класс для работы с корзиной
 class Basket extends Component<IBasket> {
     constructor(container: HTMLElement, protected events: EventEmitter) {
         super(container);
@@ -185,6 +178,7 @@ class Basket extends Component<IBasket> {
     disableButton(value: boolean): void
 }
 
+//Класс для работы с формами
 class Form<T> extends Component<IForm> {
   constructor(protected container: HTMLFormElement, protected events: IEvents) {
     super(container);
@@ -203,6 +197,7 @@ class Form<T> extends Component<IForm> {
   render(state: Partial<T> & IForm): void
 }
 
+//Класс для работы с модальными окнами
 class Modal extends Component<IModal> {
   constructor(container: HTMLElement, protected events: IEvents) {
     super(container);
@@ -221,6 +216,7 @@ class Modal extends Component<IModal> {
   render(data: IModal): HTMLElement
 }
 
+//Класс для работы с формой успешного оформления заказа
 class SuccessForm extends Component<IOrderSuccess> {
   constructor(container: HTMLElement) {
     super(container);
@@ -233,36 +229,7 @@ class SuccessForm extends Component<IOrderSuccess> {
 
 ### Компоненты предметной области
 ```TypeScript
-class AppData extends Model<IAppData> {
-    catalog: IProduct[];
-    basket: IProduct[] = [];
-    order: IOrder;
-
-    //получение списка товаров
-    setCatalog(items: IProduct[]): void
-
-    //добавление товара в корзину
-    add(value: Product): void
-
-    //удаление товара из корзины
-    remove(id: string): void
-
-    //получение значения подсчета количества товаров
-    get count(): void
-
-    //получение итоговой суммы заказа в корзине
-    get totalPrice(): void
-
-    //добавление данных покупателя
-    setDataBuyer(): void
-
-    //очистка корзины
-    resetBasket(): void
-
-    //очистка данных покупателя
-    resetOrder(): void
-}
-
+//Класс для управления отображением информации о продукте
 class Card extends Component<ICard> {
   constructor(container: HTMLElement) {
     super(container);
@@ -288,6 +255,7 @@ class Card extends Component<ICard> {
 
 }
 
+//Класс для управления отображением формы Контакты
 class ContactForm extends Form<IContactForm> {
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container, events);
@@ -300,6 +268,7 @@ class ContactForm extends Form<IContactForm> {
   set email(value: string): void
 }
 
+//Класс для управления отображением формы оформления доставки
 class DeliverForm extends Form<IDeliverForm> {
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container, events);
@@ -309,36 +278,7 @@ class DeliverForm extends Form<IDeliverForm> {
   set address(value: string): void
 }
 
-class LarekAPI extends Api implements ILarekAPI {
-  //API_ORIGIN
-  readonly cdn: string;
-
-  constructor(cdn: string, baseUrl: string, options?: RequestInit) {
-    super(baseUrl, options);
-    this.cdn = cdn;
-  }
-
-  //получение товара
-  getProduct(id: string): Promise<ICard> {
-    return this.get(`/product/${id}`)
-            .then((item: ICard) => ({
-              ...item,
-              image: this.cdn + item.image,
-            }));
-  }
-
-  //получение списка товаров
-  getProductList(): Promise<ICard[]> {
-    return this.get('/product')
-            .then((data: ApiListResponse<ICard>) =>
-                    data.items.map((item) => ({
-                      ...item,
-                      image: this.cdn + item.image,
-                    }))
-            );
-  }
-}
-
+//Класс для управления элементами главной страницы
 class Page extends Component<IPage> {
   constructor(container: HTMLElement, protected events: IEvents) {
     super(container);

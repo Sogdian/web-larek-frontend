@@ -2,6 +2,7 @@ import { Component } from '../base/component';
 import { EventEmitter } from '../base/events';
 import { IBasket } from '../../types';
 
+//Класс для работы с корзиной
 export class Basket extends Component<IBasket> {
     constructor(container: HTMLElement, protected events: EventEmitter) {
         super(container);

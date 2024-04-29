@@ -6,6 +6,7 @@ export interface ILarekAPI {
     getProductList: () => Promise<ICard[]>;
 }
 
+//Класс для взаимодействия с сервером
 export class LarekAPI extends Api implements ILarekAPI {
     //API_ORIGIN
     readonly cdn: string;

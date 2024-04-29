@@ -1,4 +1,4 @@
-import { Component } from './base/Component';
+import {Component} from './base/Component';
 import {Category, ICard} from "../types";
 
 const CategoryTypes: Record<string, string> = {
@@ -8,6 +8,7 @@ const CategoryTypes: Record<string, string> = {
     'хард-скил': 'hard',
 };
 
+//Класс для управления отображения информации о продукте
 export class Card extends Component<ICard> {
     constructor(container: HTMLElement) {
         super(container);
@@ -30,5 +31,4 @@ export class Card extends Component<ICard> {
 
     //установка категории товара
     set category(value: Category): void
-
 }
