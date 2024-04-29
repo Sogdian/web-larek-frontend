@@ -3,9 +3,6 @@ import {IEvents} from "./base/events";
 import {IForm} from "../types";
 
 export class Form<T> extends Component<IForm> {
-    protected _submit: HTMLButtonElement;
-    protected _errors: HTMLElement;
-
     constructor(protected container: HTMLFormElement, protected events: IEvents) {
         super(container);
     }

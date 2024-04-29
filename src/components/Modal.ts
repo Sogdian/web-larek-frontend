@@ -3,9 +3,6 @@ import {IModal} from "../types";
 import {IEvents} from "./base/events";
 
 export class Modal extends Component<IModal> {
-    protected _closeButton: HTMLButtonElement;
-    protected _content: HTMLElement;
-
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
     }
