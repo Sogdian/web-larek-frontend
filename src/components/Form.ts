@@ -10,10 +10,10 @@ export class Form<T> extends Component<IForm> {
     //изменение поля в заказе
     protected onInputChange(field: keyof T, value: string): void
 
-    //установить значение валидности
+    //установка значения валидности
     set valid(value: boolean): void
 
-    //установить ошибки в форме
+    //передача ошибок в форме
     set errors(value: string): void
 
     //отображение формы

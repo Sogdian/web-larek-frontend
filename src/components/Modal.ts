@@ -7,6 +7,7 @@ export class Modal extends Component<IModal> {
         super(container);
     }
 
+    //установка значения в модальном окне
     set content(value: HTMLElement): void
 
     //открытие модального окна

@@ -64,7 +64,7 @@ export interface IModal {
     content: HTMLElement;
 }
 
-//окно заполнение формы
+//окно формы
 export interface IForm {
     valid: boolean; //валидность формы
     errors: string[]; //ошибки в форме
