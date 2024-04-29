@@ -29,7 +29,7 @@ export interface ICard extends IProduct {
 }
 
 //модальное окно для оформления доставки
-export interface IDeliveryForm {
+export interface IDeliverForm {
     address: string; //адрес доставки
     payment: string; //способ оплаты
 }
@@ -47,7 +47,7 @@ export interface IBasket {
 }
 
 //заказ
-export interface IOrder extends IDeliveryForm, IContactForm {
+export interface IOrder extends IDeliverForm, IContactForm {
     items: string[]; //список id товаров
     total: number; //общая сумма заказа
 }
