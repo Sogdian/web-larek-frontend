@@ -1,5 +1,5 @@
-import { Api, ApiListResponse } from './base/api';
-import { ICard } from '../types';
+import {Api, ApiListResponse} from './base/api';
+import {ICard} from '../types';
 
 export interface ILarekAPI {
     getProduct: (id: string) => Promise<ICard>;
@@ -15,17 +15,19 @@ export class LarekAPI extends Api implements ILarekAPI {
         this.cdn = cdn;
     }
 
-    //получить товар
+    //получение товара
     getProduct(id: string): Promise<ICard> {
-        return this.get(`/product/${id}`).then((item: ICard) => ({
+        return this.get(`/product/${id}`)
+            .then((item: ICard) => ({
             ...item,
             image: this.cdn + item.image,
         }));
     }
 
-    //получить список товаров
+    //получение списка товаров
     getProductList(): Promise<ICard[]> {
-        return this.get('/product').then((data: ApiListResponse<ICard>) =>
+        return this.get('/product')
+            .then((data: ApiListResponse<ICard>) =>
             data.items.map((item) => ({
                 ...item,
                 image: this.cdn + item.image,

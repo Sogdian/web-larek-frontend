@@ -1,4 +1,4 @@
-type Category =  'софт-скил' | 'другое' | 'дополнительное' | 'кнопка' | 'хард-скил';
+export type Category =  'софт-скил' | 'другое' | 'дополнительное' | 'кнопка' | 'хард-скил';
 
 //данные приложения
 export interface IAppData {
@@ -56,4 +56,16 @@ export interface IOrder extends IDeliveryForm, IContactForm {
 export interface IOrderSuccess {
     id: string; //id заказа
     total: number; //количество списанных синапсов
+}
+
+//любое модальное окно
+export interface IModal {
+    //содержимое
+    content: HTMLElement;
+}
+
+//окно заполнение формы
+export interface IForm {
+    valid: boolean; //валидность формы
+    errors: string[]; //ошибки в форме
 }
