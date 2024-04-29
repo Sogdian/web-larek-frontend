@@ -55,7 +55,7 @@ export interface IOrder extends IDeliveryForm, IContactForm {
 //успешное оформление заказа
 export interface IOrderSuccess {
     id: string; //id заказа
-    total: number; //количество списанных синапсов
+    count: number; //количество списанных синапсов
 }
 
 //любое модальное окно
