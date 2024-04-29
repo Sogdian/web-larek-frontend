@@ -1,13 +1,13 @@
 export type Category =  'софт-скил' | 'другое' | 'дополнительное' | 'кнопка' | 'хард-скил';
 
-//данные приложения
+//интерфейс данных приложения
 export interface IAppData {
     catalog: IProduct[]; //список товаров
     basket: IProduct[]; //информация из корзины
     order: IOrder | null; //информация для заказа
 }
 
-//главная страница
+//интерфейс главной страницы
 export interface IPage {
     list: HTMLElement[]; //список товаров
 }
@@ -28,43 +28,43 @@ export interface ICard extends IProduct {
     selected: boolean; //в корзине ли товар
 }
 
-//модальное окно для оформления доставки
+//интерфейс модального окна для оформления доставки
 export interface IDeliverForm {
     address: string; //адрес доставки
     payment: string; //способ оплаты
 }
 
-//модальное окно Контакты
+//интерфейс модального окна Контакты
 export interface IContactForm {
     email: string; //email
     phone: string; //телефон
 }
 
-//корзина
+//интерфейс корзины
 export interface IBasket {
     items: HTMLElement[]; //список товаров
     price: number; //стоимость заказа
 }
 
-//заказ
+//интерфейс заказа
 export interface IOrder extends IDeliverForm, IContactForm {
     items: string[]; //список id товаров
     total: number; //общая сумма заказа
 }
 
-//успешное оформление заказа
+//интерфейс успешное оформление заказа
 export interface IOrderSuccess {
     id: string; //id заказа
     count: number; //количество списанных синапсов
 }
 
-//любое модальное окно
+//интерфейс модального окна
 export interface IModal {
     //содержимое
     content: HTMLElement;
 }
 
-//окно формы
+//интерфейс окна формы
 export interface IForm {
     valid: boolean; //валидность формы
     errors: string[]; //ошибки в форме
