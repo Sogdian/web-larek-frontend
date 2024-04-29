@@ -2,7 +2,6 @@ import {Model} from './base/Model';
 import {IAppData, IOrder, IProduct} from "../types";
 import {Product} from "./Product";
 
-//Класс для хранение данных
 export class AppData extends Model<IAppData> {
     catalog: IProduct[];
     basket: IProduct[] = [];

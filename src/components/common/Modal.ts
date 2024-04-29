@@ -1,6 +1,6 @@
-import {Component} from "./base/component";
-import {IModal} from "../types";
-import {IEvents} from "./base/events";
+import {Component} from "../base/component";
+import {IModal} from "../../types";
+import {IEvents} from "../base/events";
 
 export class Modal extends Component<IModal> {
     constructor(container: HTMLElement, protected events: IEvents) {

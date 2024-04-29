@@ -1,6 +1,6 @@
-import {Component} from "./base/component";
-import {IEvents} from "./base/events";
-import {IForm} from "../types";
+import {Component} from "../base/component";
+import {IEvents} from "../base/events";
+import {IForm} from "../../types";
 
 export class Form<T> extends Component<IForm> {
     constructor(protected container: HTMLFormElement, protected events: IEvents) {

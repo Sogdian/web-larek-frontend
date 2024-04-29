@@ -1,6 +1,6 @@
-import { Component } from './base/Component';
-import { EventEmitter } from './base/events';
-import { IBasket } from '../types';
+import { Component } from '../base/component';
+import { EventEmitter } from '../base/events';
+import { IBasket } from '../../types';
 
 export class Basket extends Component<IBasket> {
     constructor(container: HTMLElement, protected events: EventEmitter) {

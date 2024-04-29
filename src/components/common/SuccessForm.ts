@@ -1,5 +1,5 @@
-import {IOrderSuccess} from "../types";
-import {Component} from './base/Component';
+import {IOrderSuccess} from "../../types";
+import {Component} from '../base/component';
 
 export class SuccessForm extends Component<IOrderSuccess> {
     constructor(container: HTMLElement) {
