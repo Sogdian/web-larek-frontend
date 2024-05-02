@@ -15,47 +15,80 @@
 - src/utils/constants.ts — файл с константами
 - src/utils/utils.ts — файл с утилитами
 
+### Установка и запуск
+Для установки и запуска проекта необходимо выполнить команды
+
+```
+npm install
+npm run start
+```
+
+или
+
+```
+yarn
+yarn start
+```
+### Сборка
+
+```
+npm run build
+```
+
+или
+
+```
+yarn build
+```
+
+### Паттерн проекта:
+Использован паттерн MVP (Model-View-Presenter). Проект разделен на слои: 
+- слой отображения (View), классы: Basket, Form, Modal, SuccessForm, Card, ContactForm, DeliverForm, Page
+- слой представления (Presenter): соединение Model и View через навешивания событий в файле index.ts
+- слой данных (Model), классы: AppData + LarekAPI (слой коммуникации)
+
 ### Описание базовых классов:
-- **Класс EventEmitter** обеспечивает работу событий. Его функции: установить и снять слушателей событий, вызвать слушателей при возникновении события
-
+- **Класс EventEmitter** обеспечивает работу событий. Его функции: установить и снять слушателей событий, вызвать слушателей при возникновении события. 
+Использован паттерн «Observer», который позволяет подписаться и уведомлять о событиях.
   #### Методы:
-  - on - установить обработчик на событие
-  - off - снять обработчик с события
-  - emit - инициировать событие с данными
-  - onAll - слушать все события
-  - offAll - сбросить все обработчики
-  - trigger - сделать коллбек триггер, генерирующий событие при вызове
+  - on(eventName: EventName, callback: (event: T) => void) - установить обработчик на событие
+  - off(eventName: EventName, callback: Subscriber) - снять обработчик с события
+  - emit(eventName: string, data?: T) - инициировать событие с данными
+  - onAll(callback: (event: EmitterEvent) => void) - слушать все события
+  - offAll() - сбросить все обработчики
+  - trigger(eventName: string, context?: Partial<T>) - сделать коллбек триггер, генерирующий событие при вызове
 
 
-- **Класс Api** обеспечивает взаимодействие с сервером. Его функции: выполнить get и post запросы для получения списка продуктов и конкретного продукта
-
+- **Класс Api** обеспечивает взаимодействие с сервером. Его функции: выполнить get и post запросы для получения списка продуктов и конкретного продукта.
     #### Методы:
-  - get - выполняет get запрос на сервер
-  - post - выполняет post запрос на сервер
+  - get(uri: string) - выполняет get запрос на сервер
+  - post(uri: string, data: object, method: ApiPostMethods) - выполняет post запрос на сервер
 
 
 - **Класс Component** обеспечивает методами для работы с DOM. Его функции: устанавливать данные в компонентах, а также отрисовывать их
     #### Методы:
-  - toggleClass - переключить класс
-  - setText - установить текстовое содержимое
-  - setDisabled - сменить статус блокировки
-  - setHidden - скрыть компонент
-  - setVisible - показать компонент
-  - setImage - установить изображение с альтернативным текстом
-  - render - вернуть корневой DOM-элемент
+  - toggleClass(element: HTMLElement, className: string, force?: boolean) - переключить класс
+  - setText(element: HTMLElement, value: string) - установить текстовое содержимое
+  - setDisabled(element: HTMLElement, state: boolean) - сменить статус блокировки
+  - setHidden(element: HTMLElement) - скрыть компонент
+  - setVisible(element: HTMLElement) - показать компонент
+  - setImage(element: HTMLImageElement, src: string, alt?: string) - установить изображение с альтернативным текстом
+  - render(data?: Partial<T>) - вернуть корневой DOM-элемент
 
 
 - **Класс Model** - абстрактный класс для слоя данных. Его функции: получить данные и события, чтобы уведомлять что данные поменялись
-
     #### Методы:
-  - emitChanges - сообщить всем что модель поменялась
+  - emitChanges(event: string, payload?: object) - сообщить всем что модель поменялась
 
 # UML схема
 ![UML](./src/images/UML.png)
 
+файл добавлен в проект и [отображается](https://github.com/Sogdian/web-larek-frontend/blob/main/src/images/UML.png)
+
 ### API
 ```TypeScript
-//Класс для взаимодействия с сервером
+//Класс для взаимодействия с сервером, наследуется от класса Api (реализация слоя Model)
+//Методы класса используются для получения данных с сервера и предоставления данных в Presenter для отображения в компонентах (View)
 export class LarekAPI extends Api implements ILarekAPI {
     //API_ORIGIN
     readonly cdn: string;
@@ -144,8 +177,10 @@ export interface IForm {
 ```
 ### Слой данных
 ```TypeScript
-//Класс для управления состоянием приложения
-export class AppData extends Model<IAppData> {
+//Класс для управления состоянием приложения, т.е. для хранение данных (реализация слоя Model), наследуется от класса Model
+//Класс получает, передает, хранит и удаляет данные, которые используются Presenter'ом (данные приходят и отправляются в Presenter)
+//Например, в Presenter (index.ts) вызывается эксземпляр класса AppData и происходит передача данных, например товара (Product) используя метод (add) класса AppData
+  export class AppData extends Model<IAppData> {
     //получение списка товаров
     setCatalog(items: IProduct[]): void
 
@@ -174,7 +209,8 @@ export class AppData extends Model<IAppData> {
 
 ### Общие компоненты
 ```TypeScript
-//Класс для работы с корзиной
+//Класс для работы с корзиной, наследуется от класса Component (реализация слоя View)
+//Класс используется для управления отображением данных (товаров, цены) в компоненте корзины   
 class Basket extends Component<IBasket> {
     constructor(container: HTMLElement, protected events: EventEmitter) {
         super(container);
@@ -190,7 +226,8 @@ class Basket extends Component<IBasket> {
     disableButton(value: boolean): void
 }
 
-//Класс для работы с формами
+//Класс для работы с формами, наследуется от класса Component (реализация слоя View)
+//Класс используется для установки значения валидности и передачу ошибок в компонент, а также для отображения компонента (render) формы заполнения данных
 class Form<T> extends Component<IForm> {
   constructor(protected container: HTMLFormElement, protected events: IEvents) {
     super(container);
@@ -209,7 +246,8 @@ class Form<T> extends Component<IForm> {
   render(state: Partial<T> & IForm): void
 }
 
-//Класс для работы с модальными окнами
+//Класс для работы с модальными окнами, наследуется от класса Component (реализация слоя View)
+//Класс используется для управления состоянием (открыт, закрыт) и отображением компонента (render) модального окна
 class Modal extends Component<IModal> {
   constructor(container: HTMLElement, protected events: IEvents) {
     super(container);
@@ -228,7 +266,8 @@ class Modal extends Component<IModal> {
   render(data: IModal): HTMLElement
 }
 
-//Класс для работы с формой успешного оформления заказа
+//Класс для работы с окном успешного оформления заказа, наследуется от класса Component (реализация слоя View)
+//Класс используется для управления отображением данных (стоимость товара) в компоненте модального окна успешного оформления заказа
 class SuccessForm extends Component<IOrderSuccess> {
   constructor(container: HTMLElement) {
     super(container);
@@ -241,7 +280,8 @@ class SuccessForm extends Component<IOrderSuccess> {
 
 ### Компоненты предметной области
 ```TypeScript
-//Класс для управления отображением информации о продукте
+//Класс для управления отображением информации о продукте, наследуется от класса Component (реализация слоя View)
+//Класс используется для управления отображением данных (название, картинка) в компоненте карточки товара
 class Card extends Component<ICard> {
   constructor(container: HTMLElement) {
     super(container);
@@ -264,10 +304,10 @@ class Card extends Component<ICard> {
 
   //установка категории товара
   set category(value: Category): void
-
 }
 
-//Класс для управления отображением формы Контакты
+//Класс для управления отображением формы Контакты, наследуется от класса Form (реализация слоя View)
+//Класс используется для управления отображением данных (телефон, почта) в компоненте формы заполнения данных пользователя
 class ContactForm extends Form<IContactForm> {
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container, events);
@@ -280,7 +320,8 @@ class ContactForm extends Form<IContactForm> {
   set email(value: string): void
 }
 
-//Класс для управления отображением формы оформления доставки
+//Класс для управления отображением формы оформления доставки, наследуется от класса Form (реализация слоя View)
+//Класс используется для управления отображением данных (адрес) в компоненте формы заполнения данных пользователя
 class DeliverForm extends Form<IDeliverForm> {
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container, events);
@@ -290,7 +331,8 @@ class DeliverForm extends Form<IDeliverForm> {
   set address(value: string): void
 }
 
-//Класс для управления элементами главной страницы
+//Класс для управления элементами главной страницы, наследуется от класса Component (реализация слоя View)
+//Класс используется для управления состоянием страницы и отображением товаров на странице
 class Page extends Component<IPage> {
   constructor(container: HTMLElement, protected events: IEvents) {
     super(container);
@@ -304,28 +346,4 @@ class Page extends Component<IPage> {
 }
 ```
 
-## Установка и запуск
-Для установки и запуска проекта необходимо выполнить команды
 
-```
-npm install
-npm run start
-```
-
-или
-
-```
-yarn
-yarn start
-```
-## Сборка
-
-```
-npm run build
-```
-
-или
-
-```
-yarn build
-```
