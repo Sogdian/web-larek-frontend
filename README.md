@@ -47,6 +47,9 @@ yarn build
 - слой отображения (View) - классы компонентов: Basket, Form, Modal, SuccessForm, Card, ContactForm, DeliverForm, Page
 - слой представления (Presenter): соединение Model и View через навешивания событий в файле index.ts
 
+Взаимодействие данных (процессов) происходит с помощью событий (events), которые устанавливаются (emit) на определенные события, например, открытие модального окна.
+И по наступлению события в Presenter'е выполняется соответствующих код, например, блокировка страницы (вокруг открытого модального окна).
+
 [MVP.png](https://github.com/Sogdian/web-larek-frontend/blob/main/src/images/MVP.png)
 ![MVP](./src/images/MVP.png)
 
@@ -96,7 +99,37 @@ yarn build
 
 ![UML](./src/images/UML.png)
 
-### API
+### Слой данных
+- **Класс AppData** - Класс для управления состоянием приложения, т.е. для хранение данных (реализация слоя Model), наследуется от класса Model. Класс получает, передает, хранит и удаляет данные, которые используются Presenter'ом (данные приходят и отправляются в Presenter). Например, в Presenter (index.ts) вызывается эксземпляр класса AppData и происходит передача данных, например товара (Product) используя метод (add) класса AppData
+```TypeScript
+  export class AppData extends Model<IAppData> {
+    //получение списка товаров
+    setCatalog(items: IProduct[]): void
+
+    //добавление товара в корзину
+    add(value: Product): void
+
+    //удаление товара из корзины
+    remove(id: string): void
+
+    //подсчет количества товаров
+    get count(): void
+
+    //получение итоговой суммы заказа в корзине
+    get totalPrice(): void
+
+    //добавление данных покупателя
+    setDataBuyer(): void
+
+    //очистка корзины
+    resetBasket(): void
+
+    //очистка данных покупателя
+    resetOrder(): void
+}
+```
+
+### Слой коммуникаций
 - **Класс LarekAPI** - Класс для взаимодействия с сервером, наследуется от класса Api (реализация слоя Model). Методы класса используются для получения данных с сервера и предоставления данных в Presenter для отображения в компонентах (View)
 ```TypeScript
 export class LarekAPI extends Api implements ILarekAPI {
@@ -185,37 +218,9 @@ export interface IForm {
   errors: string[]; //ошибки в форме
 }
 ```
-### Слой данных
-- **Класс AppData** - Класс для управления состоянием приложения, т.е. для хранение данных (реализация слоя Model), наследуется от класса Model. Класс получает, передает, хранит и удаляет данные, которые используются Presenter'ом (данные приходят и отправляются в Presenter). Например, в Presenter (index.ts) вызывается эксземпляр класса AppData и происходит передача данных, например товара (Product) используя метод (add) класса AppData
-```TypeScript
-  export class AppData extends Model<IAppData> {
-    //получение списка товаров
-    setCatalog(items: IProduct[]): void
 
-    //добавление товара в корзину
-    add(value: Product): void
-
-    //удаление товара из корзины
-    remove(id: string): void
-
-    //подсчет количества товаров
-    get count(): void
-
-    //получение итоговой суммы заказа в корзине
-    get totalPrice(): void
-
-    //добавление данных покупателя
-    setDataBuyer(): void
-
-    //очистка корзины
-    resetBasket(): void
-
-    //очистка данных покупателя
-    resetOrder(): void
-}
-```
-
-### Общие компоненты
+### Слой представления
+#### Общие компоненты
 - **Класс Basket** - Класс для работы с корзиной, наследуется от класса Component (реализация слоя View). Класс используется для управления отображением данных (товаров, цены) в компоненте корзины
 ```TypeScript
 class Basket extends Component<IBasket> {
@@ -285,7 +290,7 @@ class SuccessForm extends Component<IOrderSuccess> {
 }
 ```
 
-### Компоненты предметной области
+#### Компоненты предметной области
 - **Класс Card** - Класс для управления отображением информации о продукте, наследуется от класса Component (реализация слоя View). Класс используется для управления отображением данных (название, картинка) в компоненте карточки товара
 ```TypeScript
 class Card extends Component<ICard> {
