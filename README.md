@@ -46,11 +46,13 @@ yarn build
 - слой данных (Model) - классы: AppData + LarekAPI (слой коммуникации)
 - слой отображения (View) - классы компонентов: Basket, Form, Modal, SuccessForm, Card, ContactForm, DeliverForm, Page
 - слой представления (Presenter): соединение Model и View через навешивания событий в файле index.ts
+
 [MVP.png](https://github.com/Sogdian/web-larek-frontend/blob/main/src/images/MVP.png)
-- ![MVP](./src/images/MVP.png)
+![MVP](./src/images/MVP.png)
 
 ### Архитектура проекта
 В проекте используются данные (товара, покупателя) собираемые в объекты данных, которые передается в компоненты (карточка товара, формы данных покупателя) и в коллекции этих объектов.
+
 [Architecture.png](https://github.com/Sogdian/web-larek-frontend/blob/main/src/images/Architecture.png)
 ![Architecture](./src/images/Architecture.png)
 
@@ -91,6 +93,7 @@ yarn build
 
 # UML схема
 [UML.png](https://github.com/Sogdian/web-larek-frontend/blob/main/src/images/UML.png)
+
 ![UML](./src/images/UML.png)
 
 ### API
