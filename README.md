@@ -41,11 +41,18 @@ npm run build
 yarn build
 ```
 
-### Паттерн проекта:
+### О проекте:
 Использован паттерн MVP (Model-View-Presenter). Проект разделен на слои: 
-- слой отображения (View), классы: Basket, Form, Modal, SuccessForm, Card, ContactForm, DeliverForm, Page
+- слой данных (Model) - классы: AppData + LarekAPI (слой коммуникации)
+- слой отображения (View) - классы компонентов: Basket, Form, Modal, SuccessForm, Card, ContactForm, DeliverForm, Page
 - слой представления (Presenter): соединение Model и View через навешивания событий в файле index.ts
-- слой данных (Model), классы: AppData + LarekAPI (слой коммуникации)
+![UML](./src/images/MVP.png)
+
+### Архитектура проекта
+В проекте используются данные (товара, покупателя) собираемые в объекты данных, которые передается в компоненты (карточка товара, формы данных покупателя) и в коллекции этих объектов.
+![UML](./src/images/Architecture.png)
+
+Компоненты в проекте - модальные окна: товара, корзины, форм заполнения данных пользователя и успешного оформления заказа.
 
 ### Описание базовых классов:
 - **Класс EventEmitter** обеспечивает работу событий. Его функции: установить и снять слушателей событий, вызвать слушателей при возникновении события. 
@@ -82,13 +89,11 @@ yarn build
 
 # UML схема
 ![UML](./src/images/UML.png)
-
-файл добавлен в проект и [отображается](https://github.com/Sogdian/web-larek-frontend/blob/main/src/images/UML.png)
+[UML.png](https://github.com/Sogdian/web-larek-frontend/blob/main/src/images/UML.png)
 
 ### API
+- **Класс LarekAPI** - Класс для взаимодействия с сервером, наследуется от класса Api (реализация слоя Model). Методы класса используются для получения данных с сервера и предоставления данных в Presenter для отображения в компонентах (View)
 ```TypeScript
-//Класс для взаимодействия с сервером, наследуется от класса Api (реализация слоя Model)
-//Методы класса используются для получения данных с сервера и предоставления данных в Presenter для отображения в компонентах (View)
 export class LarekAPI extends Api implements ILarekAPI {
     //API_ORIGIN
     readonly cdn: string;
@@ -176,10 +181,8 @@ export interface IForm {
 }
 ```
 ### Слой данных
+- **Класс AppData** - Класс для управления состоянием приложения, т.е. для хранение данных (реализация слоя Model), наследуется от класса Model. Класс получает, передает, хранит и удаляет данные, которые используются Presenter'ом (данные приходят и отправляются в Presenter). Например, в Presenter (index.ts) вызывается эксземпляр класса AppData и происходит передача данных, например товара (Product) используя метод (add) класса AppData
 ```TypeScript
-//Класс для управления состоянием приложения, т.е. для хранение данных (реализация слоя Model), наследуется от класса Model
-//Класс получает, передает, хранит и удаляет данные, которые используются Presenter'ом (данные приходят и отправляются в Presenter)
-//Например, в Presenter (index.ts) вызывается эксземпляр класса AppData и происходит передача данных, например товара (Product) используя метод (add) класса AppData
   export class AppData extends Model<IAppData> {
     //получение списка товаров
     setCatalog(items: IProduct[]): void
@@ -208,9 +211,8 @@ export interface IForm {
 ```
 
 ### Общие компоненты
+- **Класс Basket** - Класс для работы с корзиной, наследуется от класса Component (реализация слоя View). Класс используется для управления отображением данных (товаров, цены) в компоненте корзины
 ```TypeScript
-//Класс для работы с корзиной, наследуется от класса Component (реализация слоя View)
-//Класс используется для управления отображением данных (товаров, цены) в компоненте корзины   
 class Basket extends Component<IBasket> {
     constructor(container: HTMLElement, protected events: EventEmitter) {
         super(container);
@@ -225,9 +227,9 @@ class Basket extends Component<IBasket> {
     //блокировка кнопки
     disableButton(value: boolean): void
 }
-
-//Класс для работы с формами, наследуется от класса Component (реализация слоя View)
-//Класс используется для установки значения валидности и передачу ошибок в компонент, а также для отображения компонента (render) формы заполнения данных
+```
+- **Класс Form** - Класс для работы с формами, наследуется от класса Component (реализация слоя View). Класс используется для установки значения валидности и передачу ошибок в компонент, а также для отображения компонента (render) формы заполнения данных
+```TypeScript
 class Form<T> extends Component<IForm> {
   constructor(protected container: HTMLFormElement, protected events: IEvents) {
     super(container);
@@ -245,9 +247,9 @@ class Form<T> extends Component<IForm> {
   //отображение формы
   render(state: Partial<T> & IForm): void
 }
-
-//Класс для работы с модальными окнами, наследуется от класса Component (реализация слоя View)
-//Класс используется для управления состоянием (открыт, закрыт) и отображением компонента (render) модального окна
+```
+- **Класс Modal** - Класс для работы с модальными окнами, наследуется от класса Component (реализация слоя View). Класс используется для управления состоянием (открыт, закрыт) и отображением компонента (render) модального окна
+```TypeScript
 class Modal extends Component<IModal> {
   constructor(container: HTMLElement, protected events: IEvents) {
     super(container);
@@ -265,9 +267,9 @@ class Modal extends Component<IModal> {
   //отображение модального окна
   render(data: IModal): HTMLElement
 }
-
-//Класс для работы с окном успешного оформления заказа, наследуется от класса Component (реализация слоя View)
-//Класс используется для управления отображением данных (стоимость товара) в компоненте модального окна успешного оформления заказа
+```
+- **Класс SuccessForm** - Класс для работы с окном успешного оформления заказа, наследуется от класса Component (реализация слоя View). Класс используется для управления отображением данных (стоимость товара) в компоненте модального окна успешного оформления заказа
+```TypeScript
 class SuccessForm extends Component<IOrderSuccess> {
   constructor(container: HTMLElement) {
     super(container);
@@ -279,9 +281,8 @@ class SuccessForm extends Component<IOrderSuccess> {
 ```
 
 ### Компоненты предметной области
+- **Класс Card** - Класс для управления отображением информации о продукте, наследуется от класса Component (реализация слоя View). Класс используется для управления отображением данных (название, картинка) в компоненте карточки товара
 ```TypeScript
-//Класс для управления отображением информации о продукте, наследуется от класса Component (реализация слоя View)
-//Класс используется для управления отображением данных (название, картинка) в компоненте карточки товара
 class Card extends Component<ICard> {
   constructor(container: HTMLElement) {
     super(container);
@@ -305,9 +306,9 @@ class Card extends Component<ICard> {
   //установка категории товара
   set category(value: Category): void
 }
-
-//Класс для управления отображением формы Контакты, наследуется от класса Form (реализация слоя View)
-//Класс используется для управления отображением данных (телефон, почта) в компоненте формы заполнения данных пользователя
+```
+- **Класс ContactForm** - Класс для управления отображением формы Контакты, наследуется от класса Form (реализация слоя View). Класс используется для управления отображением данных (телефон, почта) в компоненте формы заполнения данных пользователя
+```TypeScript
 class ContactForm extends Form<IContactForm> {
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container, events);
@@ -319,9 +320,9 @@ class ContactForm extends Form<IContactForm> {
   //установка почты
   set email(value: string): void
 }
-
-//Класс для управления отображением формы оформления доставки, наследуется от класса Form (реализация слоя View)
-//Класс используется для управления отображением данных (адрес) в компоненте формы заполнения данных пользователя
+```
+- **Класс DeliverForm** - Класс для управления отображением формы оформления доставки, наследуется от класса Form (реализация слоя View). Класс используется для управления отображением данных (адрес) в компоненте формы заполнения данных пользователя
+```TypeScript
 class DeliverForm extends Form<IDeliverForm> {
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container, events);
@@ -330,9 +331,9 @@ class DeliverForm extends Form<IDeliverForm> {
   //установка адреса заказа
   set address(value: string): void
 }
-
-//Класс для управления элементами главной страницы, наследуется от класса Component (реализация слоя View)
-//Класс используется для управления состоянием страницы и отображением товаров на странице
+```
+- **Класс Page** - Класс для управления элементами главной страницы, наследуется от класса Component (реализация слоя View). Класс используется для управления состоянием страницы и отображением товаров на странице
+```TypeScript
 class Page extends Component<IPage> {
   constructor(container: HTMLElement, protected events: IEvents) {
     super(container);
