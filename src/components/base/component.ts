@@ -1,3 +1,7 @@
+/**
+ * Класс обеспечивает методами для работы с DOM.
+ * Его функции: устанавливать данные в компонентах, а также отрисовывать их
+ */
 export abstract class Component<T> {
     protected constructor(protected readonly container: HTMLElement) {}
 

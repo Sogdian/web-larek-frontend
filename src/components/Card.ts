@@ -8,7 +8,10 @@ const CategoryTypes: Record<string, string> = {
     'хард-скил': 'hard',
 };
 
-//Класс для управления отображения информации о продукте
+/**
+ * Класс для управления отображением информации о продукте, наследуется от класса Component (реализация слоя View).
+ * Класс используется для управления отображением данных (название, картинка) в компоненте карточки товара
+ */
 export class Card extends Component<ICard> {
     constructor(container: HTMLElement) {
         super(container);

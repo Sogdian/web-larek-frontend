@@ -2,7 +2,11 @@ import {Model} from './base/Model';
 import {IAppData, IOrder, IProduct} from "../types";
 import {Product} from "./Product";
 
-//Класс для управления состоянием приложения
+/**
+ * Класс для управления состоянием приложения, т.е. для хранения данных (реализация слоя Model), наследуется от класса Model.
+ * Класс получает, передает, хранит и удаляет данные, которые используются Presenter'ом (данные приходят и отправляются в Presenter).
+ * Например, в Presenter (index.ts) вызывается экземпляр класса AppData и происходит передача данных, например товара (Product) используя метод (add) класса AppData
+ */
 export class AppData extends Model<IAppData> {
     catalog: IProduct[];
     basket: IProduct[] = [];

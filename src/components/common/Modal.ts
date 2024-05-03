@@ -2,7 +2,10 @@ import {Component} from "../base/component";
 import {IModal} from "../../types";
 import {IEvents} from "../base/events";
 
-//Класс для работы с модальными окнами
+/**
+ * Класс для работы с модальными окнами, наследуется от класса Component (реализация слоя View).
+ * Класс используется для управления состоянием (открыт, закрыт) и отображением компонента (render) модального окна
+ */
 export class Modal extends Component<IModal> {
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);

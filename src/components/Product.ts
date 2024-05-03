@@ -2,7 +2,9 @@ import {IProduct} from "../types";
 import {Category} from "../types";
 import {Model} from './base/Model';
 
-//Класс описывающий свойства товара
+/**
+ * Класс описывающий свойства товара, наследуется от класса Model (реализация слоя Model).
+ */
 export class Product extends Model<IProduct> {
     id: string;
     category: Category;

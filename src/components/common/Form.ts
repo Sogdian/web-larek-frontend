@@ -2,7 +2,10 @@ import {Component} from "../base/component";
 import {IEvents} from "../base/events";
 import {IForm} from "../../types";
 
-//Класс для работы с формами
+/**
+ * Класс для работы с формами, наследуется от класса Component (реализация слоя View).
+ * Класс используется для установки значения валидности и передачу ошибок в компонент, а также для отображения компонента (render) формы заполнения данных
+ */
 export class Form<T> extends Component<IForm> {
     constructor(protected container: HTMLFormElement, protected events: IEvents) {
         super(container);

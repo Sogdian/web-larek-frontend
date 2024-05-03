@@ -6,7 +6,10 @@ export interface ILarekAPI {
     getProductList: () => Promise<ICard[]>;
 }
 
-//Класс для взаимодействия с сервером
+/**
+ * Класс для взаимодействия с сервером, наследуется от класса Api (реализация слоя Model).
+ * Методы класса используются для получения данных с сервера и предоставления данных в Presenter для отображения в компонентах (View)
+ */
 export class LarekAPI extends Api implements ILarekAPI {
     //API_ORIGIN
     readonly cdn: string;
