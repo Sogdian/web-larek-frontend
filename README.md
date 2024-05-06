@@ -119,7 +119,7 @@ yarn build
     get totalPrice(): void
 
     //добавление данных покупателя
-    setDataBuyer(): void
+    setCustomerData(): void
 
     //очистка корзины
     resetBasket(): void

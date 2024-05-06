@@ -26,23 +26,45 @@ export class AppData extends Model<IAppData> {
     }
 
     //добавление товара в корзину
-    add(value: Product): void
+    add(item: Product) {
+        this.basket.push(item);
+    }
 
     //удаление товара из корзины
-    remove(id: string): void
+    remove(id: string){
+        this.basket = this.basket.filter((item) => item.id !== id);
+        this.setCustomerData();
+    }
 
     //получение значения подсчета количества товаров
-    get count(): void
+    get count(){
+        return this.basket.length;
+    }
 
     //получение итоговой суммы заказа в корзине
-    get totalPrice(): void
+    get totalPrice(){
+        return this.basket.reduce((a, c) => a + c.price, 0);
+    }
 
     //добавление данных покупателя
-    setDataBuyer(): void
+    setCustomerData(){
+        this.order.items = this.basket.map((item) => item.id);
+    }
 
     //очистка корзины
-    resetBasket(): void
+    resetBasket(){
+        this.basket = [];
+    }
 
     //очистка данных покупателя
-    resetOrder(): void
+    resetOrder(){
+        this.order = {
+            items: [],
+            total: 0,
+            address: '',
+            email: '',
+            phone: '',
+            payment: '',
+        };
+    }
 }
