@@ -1,5 +1,6 @@
 import {Component} from './base/Component';
 import {Category, ICard} from "../types";
+import {ensureElement} from "../utils/utils";
 
 const CategoryTypes: Record<string, string> = {
     'софт-скил': 'soft',
@@ -13,25 +14,48 @@ const CategoryTypes: Record<string, string> = {
  * Класс используется для управления отображением данных (название, картинка) в компоненте карточки товара
  */
 export class Card extends Component<ICard> {
+    protected title: HTMLElement;
+    protected image?: HTMLImageElement;
+    protected text?: HTMLElement | null;
+    protected category?: HTMLElement | null;
+
     constructor(container: HTMLElement) {
         super(container);
+
+        this.title = ensureElement<HTMLElement>(`.card__title`, container);
+        this.image = container.querySelector(`.card__image`);
+        this.text = container.querySelector(`.card__text`);
+        this.category = container.querySelector(`.card__category`);
     }
 
     //установка текста в карточку
-    set title(value: string): void
+    set title(value: string) {
+        this.setText(this.title, value);
+    }
 
     //получение текста в карточке
-    get title(): string
+    get title(): string {
+        return this.title.textContent || '';
+    }
 
     //установка изображения в карточку
-    set image(value: string): void
+    set image(value: string){
+        this.setImage(this.image, value, this.title);
+    }
 
     //установка описания в карточку
-    set description(value: string)
+    set description(value: string) {
+        this.setText(this.text, value);
+    }
 
     //получение описания в карточке
-    get description(): string
+    get description(): string {
+        return this.text.textContent || '';
+    }
 
     //установка категории товара
-    set category(value: Category): void
+    set category(value: Category){
+        this.setText(this.category, value);
+        this.category.classList.add(`card__category_${CategoryTypes[value]}`);
+    }
 }
