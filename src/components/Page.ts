@@ -1,19 +1,34 @@
 import {Component} from './base/Component';
 import {IPage} from '../types';
 import {IEvents} from './base/events';
+import {ensureElement} from "../utils/utils";
 
 /**
  * Класс для управления элементами главной страницы, наследуется от класса Component (реализация слоя View).
  * Класс используется для управления состоянием страницы и отображением товаров на странице
  */
 export class Page extends Component<IPage> {
+    protected catalog: HTMLElement;
+    protected wrapper: HTMLElement;
+
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
+
+        this.catalog = ensureElement<HTMLElement>('.gallery');
+        this.wrapper = ensureElement<HTMLElement>('.page__wrapper');
     }
 
     //установка списка товаров на странице
-    set list(items: HTMLElement[]): void
+    set list(items: HTMLElement[]){
+        this.catalog.replaceChildren(...items);
+    }
 
     //установка блокировки на странице
-    set blocked(value: boolean): void
+    set blocked(value: boolean){
+        if (value) {
+            this.wrapper.classList.add('page__wrapper_locked');
+        } else {
+            this.wrapper.classList.remove('page__wrapper_locked');
+        }
+    }
 }

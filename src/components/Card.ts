@@ -1,5 +1,5 @@
 import {Component} from './base/Component';
-import {Category, ICard} from "../types";
+import {Category, ICard, ICardAction} from "../types";
 import {ensureElement} from "../utils/utils";
 
 const CategoryTypes: Record<string, string> = {
@@ -19,7 +19,7 @@ export class Card extends Component<ICard> {
     protected text?: HTMLElement | null;
     protected category?: HTMLElement | null;
 
-    constructor(container: HTMLElement) {
+    constructor(container: HTMLElement, actions?: ICardAction) {
         super(container);
 
         this.title = ensureElement<HTMLElement>(`.card__title`, container);

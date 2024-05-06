@@ -69,3 +69,8 @@ export interface IForm {
     valid: boolean; //валидность формы
     errors: string[]; //ошибки в форме
 }
+
+//интерфейс действий над карточкой
+export interface ICardAction {
+    onClick: (event: MouseEvent) => void; //по клику
+}
