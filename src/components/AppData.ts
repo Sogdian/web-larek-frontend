@@ -10,10 +10,20 @@ import {Product} from "./Product";
 export class AppData extends Model<IAppData> {
     catalog: IProduct[];
     basket: IProduct[] = [];
-    order: IOrder;
+    order: IOrder = {
+        address: '',
+        payment: null,
+        email: '',
+        phone: '',
+        items: [],
+        total: null,
+    };
 
     //получение списка товаров
-    setCatalog(items: IProduct[]): void
+    setCatalog(items: IProduct[]) {
+        this.catalog = items.map((item) => new Product(item, this.events));
+        this.emitChanges('items:render', { catalog: this.catalog });
+    }
 
     //добавление товара в корзину
     add(value: Product): void
