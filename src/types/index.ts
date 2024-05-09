@@ -26,6 +26,7 @@ export interface IProduct {
 //интерфейс карточки товара
 export interface ICard extends IProduct {
     selected: boolean; //в корзине ли товар
+    index?: number;
 }
 
 //интерфейс модального окна для оформления доставки
