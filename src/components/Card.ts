@@ -1,4 +1,4 @@
-import {Component} from './base/Component';
+import {Component} from './base/component';
 import {Category, ICard, ICardAction} from "../types";
 import {ensureElement} from "../utils/utils";
 
@@ -14,19 +14,19 @@ const CategoryTypes: Record<string, string> = {
  * Класс используется для управления отображением данных (название, картинка) в компоненте карточки товара
  */
 export class Card extends Component<ICard> {
-    protected title: HTMLElement;
-    protected image?: HTMLImageElement;
+    protected cardTitle: HTMLElement;
+    protected cardImage?: HTMLImageElement;
     protected text?: HTMLElement | null;
-    protected category?: HTMLElement | null;
+    protected cardCategory?: HTMLElement | null;
     protected button?: HTMLButtonElement | null;
 
     constructor(container: HTMLElement, actions?: ICardAction) {
         super(container);
 
-        this.title = ensureElement<HTMLElement>(`.card__title`, container);
-        this.image = container.querySelector(`.card__image`);
+        this.cardTitle = ensureElement<HTMLElement>(`.card__title`, container);
+        this.cardImage = container.querySelector(`.card__image`);
         this.text = container.querySelector(`.card__text`);
-        this.category = container.querySelector(`.card__category`);
+        this.cardCategory = container.querySelector(`.card__category`);
         this.button = container.querySelector(`.card__button`);
 
         if (actions?.onClick) {
@@ -40,17 +40,17 @@ export class Card extends Component<ICard> {
 
     //установка текста в карточку
     set title(value: string) {
-        this.setText(this.title, value);
+        this.setText(this.cardTitle, value);
     }
 
     //получение текста в карточке
     get title(): string {
-        return this.title.textContent || '';
+        return this.cardTitle.textContent || '';
     }
 
     //установка изображения в карточку
     set image(value: string){
-        this.setImage(this.image, value, this.title);
+        this.setImage(this.cardImage, value, this.title);
     }
 
     //установка описания в карточку
@@ -65,7 +65,7 @@ export class Card extends Component<ICard> {
 
     //установка категории товара
     set category(value: Category){
-        this.setText(this.category, value);
-        this.category.classList.add(`card__category_${CategoryTypes[value]}`);
+        this.setText(this.cardCategory, value);
+        this.cardCategory.classList.add(`card__category_${CategoryTypes[value]}`);
     }
 }

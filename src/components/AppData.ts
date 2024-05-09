@@ -1,4 +1,4 @@
-import {Model} from './base/Model';
+import {Model} from './base/model';
 import {IAppData, IOrder, IProduct} from "../types";
 import {Product} from "./Product";
 
