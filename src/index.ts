@@ -82,7 +82,7 @@ events.on('item:addInBasket', (item: Product) => {
 events.on('basket:open', () => {
     events.emit('modal:open');
 
-    const cardsBasket = appData.basket.map((item, index) => {
+    const cardsBasket = appData.basket.map((item) => {
         const cardTemplate = new Card(cloneTemplate(cardBasket), {
             onClick: () => {
                 events.emit('item:remove', item);
