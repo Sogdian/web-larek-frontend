@@ -12,5 +12,8 @@ export class DeliverForm extends Form<IDeliverForm> {
     }
 
     //установка адреса заказа
-    set address(value: string): void
+    set address(value: string) {
+        const address = this.container.elements.namedItem('address') as HTMLInputElement;
+        address.value = value;
+    }
 }
