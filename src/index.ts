@@ -11,6 +11,8 @@ import {Modal} from "./components/common/Modal";
 import {Basket} from "./components/common/Basket";
 import {DeliverForm} from "./components/DeliverForm";
 import {ContactForm} from "./components/ContactForm";
+import {ApiListResponse} from "./components/base/api";
+import {SuccessForm} from "./components/common/SuccessForm";
 
 const events = new EventEmitter();
 const api = new LarekAPI(CDN_URL, API_URL);
@@ -21,6 +23,7 @@ const cardBasket = ensureElement<HTMLTemplateElement>('#card-basket');
 const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
 const orderTemplate = ensureElement<HTMLTemplateElement>('#order');
 const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
+const successTemplate = ensureElement<HTMLTemplateElement>('#success');
 
 const appData = new AppData({}, events);
 const basket = new Basket(cloneTemplate(basketTemplate), events);
@@ -28,6 +31,7 @@ const page = new Page(document.body, events);
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 const order = new DeliverForm(cloneTemplate(orderTemplate), events);
 const contacts = new ContactForm(cloneTemplate(contactsTemplate), events);
+const success = new SuccessForm(cloneTemplate(successTemplate));
 
 //Получение товаров с сервера
 api.getProductList()
@@ -151,11 +155,29 @@ events.on('contacts:submit', () => {
        .then((result) => {
            modal.close();
            events.emit('order:success', result);
-           page.updateCount = 0;
            appData.resetBasket();
            appData.resetOrder();
        })
        .catch((err) => {
            console.error(err);
        });
+});
+
+//Отображение итоговой цены в форме успешного оформления заказа
+events.on('order:success', (result: ApiListResponse<string>) => {
+    modal.render({
+        content: success.render({
+            count: result.total,
+        }),
+    });
+});
+
+//Блокировка прокрутки страницы
+events.on('modal:open', () => {
+    page.blocked = true;
+});
+
+//Снять блокировку прокрутки страницы
+events.on('modal:close', () => {
+    page.blocked = false;
 });

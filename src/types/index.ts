@@ -59,6 +59,11 @@ export interface IOrderSuccess {
     count: number; //количество списанных синапсов
 }
 
+//интерфейс действий окна успешного оформления заказа
+export interface ISuccessActions {
+    onClick: () => void; //по клику
+}
+
 //интерфейс модального окна
 export interface IModal {
     //содержимое

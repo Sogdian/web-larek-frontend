@@ -32,9 +32,4 @@ export class Page extends Component<IPage> {
             this.wrapper.classList.remove('page__wrapper_locked');
         }
     }
-
-    //
-    set updateCount(value: number) {
-        this.setText(this.count, String(value));
-    }
 }

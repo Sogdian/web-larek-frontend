@@ -1,4 +1,4 @@
-import {IOrderSuccess} from "../../types";
+import {IOrderSuccess, ISuccessActions} from "../../types";
 import {Component} from '../base/component';
 import {ensureElement} from "../../utils/utils";
 
@@ -9,7 +9,7 @@ import {ensureElement} from "../../utils/utils";
 export class SuccessForm extends Component<IOrderSuccess> {
     protected count: HTMLElement;
 
-    constructor(container: HTMLElement) {
+    constructor(container: HTMLElement, actions?: ISuccessActions) {
         super(container);
 
         this.count = ensureElement<HTMLElement>('.order-success__description', this.container);
