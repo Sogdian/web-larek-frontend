@@ -10,6 +10,7 @@ import {ensureElement} from "../utils/utils";
 export class Page extends Component<IPage> {
     protected catalog: HTMLElement;
     protected wrapper: HTMLElement;
+    protected count: HTMLElement;
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
@@ -30,5 +31,10 @@ export class Page extends Component<IPage> {
         } else {
             this.wrapper.classList.remove('page__wrapper_locked');
         }
+    }
+
+    //
+    set updateCount(value: number) {
+        this.setText(this.count, String(value));
     }
 }
