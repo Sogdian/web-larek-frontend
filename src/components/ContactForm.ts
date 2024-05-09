@@ -12,8 +12,14 @@ export class ContactForm extends Form<IContactForm> {
     }
 
     //установка номера телефона
-    set phone(value: string): void
+    set phone(value: string) {
+        const phone = this.container.elements.namedItem('phone') as HTMLInputElement;
+        phone.value = value;
+    }
 
     //установка почты
-    set email(value: string): void
+    set email(value: string) {
+        const email = this.container.elements.namedItem('email') as HTMLInputElement;
+        email.value = value;
+    }
 }
