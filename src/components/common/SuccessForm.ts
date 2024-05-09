@@ -7,16 +7,18 @@ import {ensureElement} from "../../utils/utils";
  * Класс используется для управления отображением данных (стоимость товара) в компоненте модального окна успешного оформления заказа
  */
 export class SuccessForm extends Component<IOrderSuccess> {
-    protected count: HTMLElement;
+    protected orderCount: HTMLElement;
+    protected close: HTMLButtonElement;
 
     constructor(container: HTMLElement, actions?: ISuccessActions) {
         super(container);
 
-        this.count = ensureElement<HTMLElement>('.order-success__description', this.container);
+        this.orderCount = ensureElement<HTMLElement>('.order-success__description', this.container);
+        this.close = ensureElement<HTMLButtonElement>('.order-success__close', this.container);
     }
 
     //установка количества списанных синапсов
     set count(value: number) {
-        this.count.textContent = '!Списано ' + String(value) + ' синапсов';
+        this.orderCount.textContent = '!Списано ' + String(value) + ' синапсов';
     }
 }

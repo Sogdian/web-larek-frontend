@@ -1,21 +1,33 @@
 import {Component} from "../base/component";
 import {IModal} from "../../types";
 import {IEvents} from "../base/events";
+import {ensureElement} from "../../utils/utils";
 
 /**
  * Класс для работы с модальными окнами, наследуется от класса Component (реализация слоя View).
  * Класс используется для управления состоянием (открыт, закрыт) и отображением компонента (render) модального окна
  */
 export class Modal extends Component<IModal> {
-    protected content: HTMLElement;
+    protected modalContent: HTMLElement;
+    protected closeButton: HTMLButtonElement;
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
+
+        this.closeButton = ensureElement<HTMLButtonElement>(
+            '.modal__close',
+            container
+        );
+        this.modalContent = ensureElement<HTMLElement>('.modal__content', container);
+
+        this.closeButton.addEventListener('click', this.close.bind(this));
+        this.container.addEventListener('click', this.close.bind(this));
+        this.modalContent.addEventListener('click', (event) => event.stopPropagation());
     }
 
     //установка значения в модальном окне
     set content(value: HTMLElement) {
-        this.content.replaceChildren(value);
+        this.modalContent.replaceChildren(value);
     }
 
     //открытие модального окна

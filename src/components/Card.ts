@@ -18,6 +18,7 @@ export class Card extends Component<ICard> {
     protected image?: HTMLImageElement;
     protected text?: HTMLElement | null;
     protected category?: HTMLElement | null;
+    protected button?: HTMLButtonElement | null;
 
     constructor(container: HTMLElement, actions?: ICardAction) {
         super(container);
@@ -26,6 +27,15 @@ export class Card extends Component<ICard> {
         this.image = container.querySelector(`.card__image`);
         this.text = container.querySelector(`.card__text`);
         this.category = container.querySelector(`.card__category`);
+        this.button = container.querySelector(`.card__button`);
+
+        if (actions?.onClick) {
+            if (this.button) {
+                this.button.addEventListener('click', actions.onClick);
+            } else {
+                container.addEventListener('click', actions.onClick);
+            }
+        }
     }
 
     //установка текста в карточку

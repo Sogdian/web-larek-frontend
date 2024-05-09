@@ -10,13 +10,18 @@ import {ensureElement} from "../utils/utils";
 export class Page extends Component<IPage> {
     protected catalog: HTMLElement;
     protected wrapper: HTMLElement;
-    protected count: HTMLElement;
+    protected basket: HTMLElement;
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
 
         this.catalog = ensureElement<HTMLElement>('.gallery');
         this.wrapper = ensureElement<HTMLElement>('.page__wrapper');
+        this.basket = ensureElement<HTMLElement>('.header__basket');
+
+        this.basket.addEventListener('click', () => {
+            this.events.emit('basket:open');
+        });
     }
 
     //установка списка товаров на странице
