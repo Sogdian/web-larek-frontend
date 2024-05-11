@@ -32,7 +32,9 @@ const page = new Page(document.body, events);
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 const order = new DeliverForm(cloneTemplate(orderTemplate), events);
 const contacts = new ContactForm(cloneTemplate(contactsTemplate), events);
-const success = new SuccessForm(cloneTemplate(successTemplate));
+const success = new SuccessForm(cloneTemplate(successTemplate), {
+    onClick: () => modal.close()
+});
 
 //Получение товаров с сервера
 api.getProductList()

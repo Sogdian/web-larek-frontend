@@ -11,6 +11,7 @@ export class Page extends Component<IPage> {
     protected catalog: HTMLElement;
     protected wrapper: HTMLElement;
     protected basket: HTMLElement;
+    protected count: HTMLElement;
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
@@ -18,6 +19,7 @@ export class Page extends Component<IPage> {
         this.catalog = ensureElement<HTMLElement>('.gallery');
         this.wrapper = ensureElement<HTMLElement>('.page__wrapper');
         this.basket = ensureElement<HTMLElement>('.header__basket');
+        this.count = ensureElement<HTMLElement>('.header__basket-counter');
 
         this.basket.addEventListener('click', () => {
             this.events.emit('basket:open');
@@ -36,5 +38,10 @@ export class Page extends Component<IPage> {
         } else {
             this.wrapper.classList.remove('page__wrapper_locked');
         }
+    }
+
+    //обновление кол-ва стоимости
+    set updateCount(value: number) {
+        this.setText(this.count, String(value));
     }
 }

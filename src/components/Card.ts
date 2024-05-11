@@ -19,6 +19,7 @@ export class Card extends Component<ICard> {
     protected text?: HTMLElement | null;
     protected cardCategory?: HTMLElement | null;
     protected button?: HTMLButtonElement | null;
+    protected cardPrice: HTMLElement | null;
 
     constructor(container: HTMLElement, actions?: ICardAction) {
         super(container);
@@ -26,6 +27,7 @@ export class Card extends Component<ICard> {
         this.cardTitle = ensureElement<HTMLElement>(`.card__title`, container);
         this.cardImage = container.querySelector(`.card__image`);
         this.text = container.querySelector(`.card__text`);
+        this.cardPrice = container.querySelector(`.card__price`);
         this.cardCategory = container.querySelector(`.card__category`);
         this.button = container.querySelector(`.card__button`);
 
@@ -67,5 +69,25 @@ export class Card extends Component<ICard> {
     set category(value: Category){
         this.setText(this.cardCategory, value);
         this.cardCategory.classList.add(`card__category_${CategoryTypes[value]}`);
+    }
+
+    //установка цены товара
+    set price(value: number | null) {
+        if (value !== null) {
+            this.cardPrice.textContent = String(value) + ' синапсов';
+        }
+        else {
+            this.cardPrice.textContent = 'Бесценно';
+            if (this.button) {
+                this.button.disabled = true;
+            }
+        }
+    }
+
+    //установка выбранности товара
+    set selected(value: boolean) {
+        if (!this.button.disabled) {
+            this.button.disabled = value;
+        }
     }
 }
