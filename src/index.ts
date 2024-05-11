@@ -13,6 +13,7 @@ import {DeliverForm} from "./components/DeliverForm";
 import {ContactForm} from "./components/ContactForm";
 import {ApiListResponse} from "./components/base/api";
 import {SuccessForm} from "./components/common/SuccessForm";
+import {IOrderForm} from "./types";
 
 const events = new EventEmitter();
 const api = new LarekAPI(CDN_URL, API_URL);
@@ -181,3 +182,24 @@ events.on('modal:open', () => {
 events.on('modal:close', () => {
     page.blocked = false;
 });
+
+//Изменилось состояние валидации формы способа оплаты и адреса доставки
+events.on('orderErrors:change', (errors: Partial<IOrderForm>) => {
+    const { address, payment } = errors;
+    order.valid = !address && !payment;
+    order.errors = Object.values({ address, payment }).filter((i) => !!i).join('; ');
+});
+
+//Изменилось состояние валидации формы email и phone
+events.on('contactsErrors:change', (errors: Partial<IOrderForm>) => {
+    const { email, phone } = errors;
+    contacts.valid = !email && !phone;
+    contacts.errors = Object.values({ email, phone }).filter((i) => !!i).join('; ');
+});
+
+//Изменилось одно из полей заказа
+events.on('order:change',(data: { field: keyof IOrderForm; value: string }) => {
+        appData.setOrderField(data.field, data.value);
+    }
+);
+

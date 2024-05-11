@@ -15,10 +15,19 @@ export class SuccessForm extends Component<IOrderSuccess> {
 
         this.orderCount = ensureElement<HTMLElement>('.order-success__description', this.container);
         this.close = ensureElement<HTMLButtonElement>('.order-success__close', this.container);
+
+        if (actions?.onClick) {
+            if (this.close) {
+                this.close.addEventListener('click', actions.onClick);
+            }
+            else {
+                container.addEventListener('click', actions.onClick);
+            }
+        }
     }
 
     //установка количества списанных синапсов
     set count(value: number) {
-        this.orderCount.textContent = '!Списано ' + String(value) + ' синапсов';
+        this.orderCount.textContent = 'Списано ' + String(value) + ' синапсов';
     }
 }

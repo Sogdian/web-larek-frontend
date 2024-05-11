@@ -53,6 +53,12 @@ export interface IOrder extends IDeliverForm, IContactForm {
     total: number; //общая сумма заказа
 }
 
+//интерфейс формы заказа
+export interface IOrderForm extends IDeliverForm, IContactForm {}
+
+//интерфейс валидации формы
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
+
 //интерфейс успешное оформление заказа
 export interface IOrderSuccess {
     id: string; //id заказа

@@ -1,5 +1,5 @@
 import {Model} from './base/model';
-import {IAppData, IOrder, IProduct} from "../types";
+import {FormErrors, IAppData, IOrder, IOrderForm, IProduct} from "../types";
 import {Product} from "./Product";
 
 /**
@@ -18,6 +18,7 @@ export class AppData extends Model<IAppData> {
         items: [],
         total: null,
     };
+    formErrors: FormErrors = {};
 
     //получение списка товаров
     setCatalog(items: IProduct[]) {
@@ -54,6 +55,52 @@ export class AppData extends Model<IAppData> {
     //очистка корзины
     resetBasket(){
         this.basket = [];
+    }
+
+    //установка полей заказа
+    setOrderField(field: keyof IOrderForm, value: string) {
+        this.order[field] = value;
+
+        if (this.validateContacts()) {
+            this.events.emit('contacts:ready', this.order);
+        }
+
+        if (this.validateOrder()) {
+            this.events.emit('order:ready', this.order);
+        }
+    }
+
+    //валидация формы заполнения Email и телефона
+    validateContacts() {
+        const errors: typeof this.formErrors = {};
+
+        if (!this.order.email) {
+            errors.email = 'Укажите ваш Email';
+        }
+
+        if (!this.order.phone) {
+            errors.phone = 'Укажите ваш телефон';
+        }
+        this.formErrors = errors;
+        this.events.emit('contactsErrors:change', this.formErrors);
+
+        return Object.keys(errors).length === 0;
+    }
+
+    //валидация формы заполнения способа оплаты и адрес доставки
+    validateOrder() {
+        const errors: typeof this.formErrors = {};
+
+        if (!this.order.payment) {
+            errors.payment = 'Укажите способ оплаты';
+        }
+        if (!this.order.address) {
+            errors.address = 'Укажите адрес доставки';
+        }
+        this.formErrors = errors;
+        this.events.emit('orderErrors:change', this.formErrors);
+
+        return Object.keys(errors).length === 0;
     }
 
     //очистка данных покупателя
