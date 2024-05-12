@@ -42,12 +42,12 @@ export class Basket extends Component<IBasket> {
     }
 
     //установка цены
-    set price(value: number){
+    set price(value: number) {
         this.total.textContent = String(value) + ' синапсов';
     }
 
     //блокировка кнопки
-    disableButton(value: boolean){
+    disableButton(value: boolean) {
         this.button.disabled = value;
     }
 }

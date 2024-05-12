@@ -27,12 +27,12 @@ export class Page extends Component<IPage> {
     }
 
     //установка списка товаров на странице
-    set list(items: HTMLElement[]){
+    set list(items: HTMLElement[]) {
         this.catalog.replaceChildren(...items);
     }
 
     //установка блокировки на странице
-    set blocked(value: boolean){
+    set blocked(value: boolean) {
         if (value) {
             this.wrapper.classList.add('page__wrapper_locked');
         } else {

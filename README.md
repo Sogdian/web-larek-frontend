@@ -124,6 +124,15 @@ yarn build
     //очистка корзины
     resetBasket(): void
 
+    //установка полей заказа
+    setOrderField(field: keyof IOrderForm, value: string)
+
+    //валидация формы заполнения Email и телефона
+    validateContacts()
+
+    //валидация формы заполнения способа оплаты и адрес доставки
+    validateOrder()
+
     //очистка данных покупателя
     resetOrder(): void
 }
@@ -148,19 +157,19 @@ export class LarekAPI extends Api implements ILarekAPI {
 
 ### Типы данных
 ```TypeScript
-//данные приложения
+//интерфейс данных приложения
 export interface IAppData {
   catalog: IProduct[]; //список товаров
   basket: IProduct[]; //информация из корзины
   order: IOrder | null; //информация для заказа
 }
 
-//главная страница
+//интерфейс главной страницы
 export interface IPage {
   list: HTMLElement[]; //список товаров
 }
 
-//товар
+//интерфейс товара
 export interface IProduct {
   id: string; //id товара
   category: Category; //категория товара
@@ -171,51 +180,68 @@ export interface IProduct {
   selected?: boolean; //выбран ли товар
 }
 
-//карточка товара
+//интерфейс карточки товара
 export interface ICard extends IProduct {
   selected: boolean; //в корзине ли товар
+  index?: number;
 }
 
-//модальное окно для оформления доставки
+//интерфейс модального окна для оформления доставки
 export interface IDeliverForm {
   address: string; //адрес доставки
   payment: string; //способ оплаты
 }
 
-//модальное окно Контакты
+//интерфейс модального окна Контакты
 export interface IContactForm {
   email: string; //email
   phone: string; //телефон
 }
 
-//корзина
+//интерфейс корзины
 export interface IBasket {
   items: HTMLElement[]; //список товаров
   price: number; //стоимость заказа
 }
 
-//заказ
+//интерфейс заказа
 export interface IOrder extends IDeliverForm, IContactForm {
   items: string[]; //список id товаров
   total: number; //общая сумма заказа
 }
 
-//успешное оформление заказа
+//интерфейс формы заказа
+export interface IOrderForm extends IDeliverForm, IContactForm {}
+
+//интерфейс валидации формы
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
+
+//интерфейс успешное оформление заказа
 export interface IOrderSuccess {
   id: string; //id заказа
   count: number; //количество списанных синапсов
 }
 
-//любое модальное окно
+//интерфейс действий окна успешного оформления заказа
+export interface ISuccessActions {
+  onClick: () => void; //по клику
+}
+
+//интерфейс модального окна
 export interface IModal {
   //содержимое
   content: HTMLElement;
 }
 
-//окно формы
+//интерфейс окна формы
 export interface IForm {
   valid: boolean; //валидность формы
   errors: string[]; //ошибки в форме
+}
+
+//интерфейс действий над карточкой
+export interface ICardAction {
+  onClick: (event: MouseEvent) => void; //по клику
 }
 ```
 
@@ -315,6 +341,12 @@ class Card extends Component<ICard> {
 
   //установка категории товара
   set category(value: Category): void
+
+  //установка цены товара
+  set price(value: number | null): void
+
+  //установка выбранности товара
+  set selected(value: boolean): void
 }
 ```
 - **Класс ContactForm** - Класс для управления отображением формы Контакты, наследуется от класса Form (реализация слоя View). Класс используется для управления отображением данных (телефон, почта) в компоненте формы заполнения данных пользователя
@@ -354,6 +386,9 @@ class Page extends Component<IPage> {
 
   //установка блокировки на странице
   set blocked(value: boolean): void
+
+  //обновление кол-ва стоимости
+  set updateCount(value: number): void
 }
 ```
 

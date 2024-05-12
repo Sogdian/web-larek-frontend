@@ -51,7 +51,7 @@ export class Card extends Component<ICard> {
     }
 
     //установка изображения в карточку
-    set image(value: string){
+    set image(value: string) {
         this.setImage(this.cardImage, value, this.title);
     }
 
@@ -66,7 +66,7 @@ export class Card extends Component<ICard> {
     }
 
     //установка категории товара
-    set category(value: Category){
+    set category(value: Category) {
         this.setText(this.cardCategory, value);
         this.cardCategory.classList.add(`card__category_${CategoryTypes[value]}`);
     }

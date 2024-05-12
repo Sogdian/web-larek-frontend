@@ -31,7 +31,7 @@ export class Form<T> extends Component<IForm> {
     }
 
     //изменение поля в заказе
-    protected onInputChange(field: keyof T, value: string){
+    protected onInputChange(field: keyof T, value: string) {
         this.events.emit(`order:change`, {
             field,
             value,
@@ -39,12 +39,12 @@ export class Form<T> extends Component<IForm> {
     }
 
     //установка значения валидности
-    set valid(value: boolean){
+    set valid(value: boolean) {
         this.submit.disabled = !value;
     }
 
     //передача ошибок в форме
-    set errors(value: string){
+    set errors(value: string) {
         this.setText(this.formErrors, value);
     }
 

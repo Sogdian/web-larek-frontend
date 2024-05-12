@@ -34,7 +34,7 @@ export class Modal extends Component<IModal> {
     }
 
     //закрытие модального окна
-    close(){
+    close() {
         this.container.classList.remove('modal_active');
         this.content = null;
         this.events.emit('modal:close');
