@@ -386,9 +386,6 @@ class Page extends Component<IPage> {
 
   //установка блокировки на странице
   set blocked(value: boolean): void
-
-  //обновление кол-ва стоимости
-  set updateCount(value: number): void
 }
 ```
 

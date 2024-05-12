@@ -154,7 +154,9 @@ events.on('order:submit', () => {
 
 //Отправка заказа на сервер
 events.on('contacts:submit', () => {
-    api.post('/order', appData.order)
+    const url = '/order';
+
+    api.post(url, appData.order)
        .then((result) => {
            modal.close();
            events.emit('order:success', result);
