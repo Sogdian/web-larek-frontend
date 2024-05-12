@@ -32,28 +32,28 @@ export class AppData extends Model<IAppData> {
     }
 
     //удаление товара из корзины
-    remove(id: string){
+    remove(id: string) {
         this.basket = this.basket.filter((item) => item.id !== id);
         this.setCustomerData();
     }
 
     //получение значения подсчета количества товаров
-    get count(){
+    get count() {
         return this.basket.length;
     }
 
     //получение итоговой суммы заказа в корзине
-    get totalPrice(){
+    get totalPrice() {
         return this.basket.reduce((a, c) => a + c.price, 0);
     }
 
     //добавление данных покупателя
-    setCustomerData(){
+    setCustomerData() {
         this.order.items = this.basket.map((item) => item.id);
     }
 
     //очистка корзины
-    resetBasket(){
+    resetBasket() {
         this.basket = [];
     }
 
@@ -104,7 +104,7 @@ export class AppData extends Model<IAppData> {
     }
 
     //очистка данных покупателя
-    resetOrder(){
+    resetOrder() {
         this.order = {
             items: [],
             total: 0,

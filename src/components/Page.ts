@@ -39,9 +39,4 @@ export class Page extends Component<IPage> {
             this.wrapper.classList.remove('page__wrapper_locked');
         }
     }
-
-    //обновление кол-ва стоимости
-    set updateCount(value: number) {
-        this.setText(this.count, String(value));
-    }
 }

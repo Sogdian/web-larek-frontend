@@ -49,7 +49,7 @@ export class Form<T> extends Component<IForm> {
     }
 
     //отображение формы
-    render(state: Partial<T> & IForm){
+    render(state: Partial<T> & IForm) {
         const { valid, errors, ...inputs } = state;
         super.render({ valid, errors });
         Object.assign(this, inputs);
